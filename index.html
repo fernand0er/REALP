@@ -21,8 +21,8 @@
             padding: 15px;
             text-align: center;
             display: flex;
-            justify-content: space-between; /* Para alinear el logo y los enlaces */
-            align-items: center; /* Centra verticalmente */
+            justify-content: space-between;
+            align-items: center;
         }
 
         nav ul {
@@ -49,8 +49,8 @@
         }
 
         #logo {
-            max-height: 50px; /* Ajusta la altura del logo */
-            margin-left: 20px; /* Espacio a la izquierda del logo */
+            max-height: 50px;
+            margin-left: 20px;
         }
 
         main {
@@ -151,7 +151,7 @@
                 <li><a href="#" id="loginBtn">Iniciar Sesión</a></li>
             </ul>
         </nav>
-        <img id="logo" src="ruta_del_logo.png" alt="Logo de Aventura y Exploración"> <!-- Reemplaza con la ruta de tu logo -->
+        <img id="logo" src="descarga (6).jpg" alt="realp"> <!-- Reemplaza con la ruta de tu logo -->
     </header>
 
     <main>
@@ -213,9 +213,14 @@
 
         // Función para cargar experiencias desde el servidor
         async function loadExperiences() {
-            const response = await fetch('http://localhost:5000/experiences');
-            const experiences = await response.json();
-            experiences.forEach(experience => displayExperience(experience.text));
+            try {
+                const response = await fetch('http://localhost:5000/experiences');
+                if (!response.ok) throw new Error('Error en la carga de experiencias');
+                const experiences = await response.json();
+                experiences.forEach(experience => displayExperience(experience.text));
+            } catch (error) {
+                console.error('Error al cargar experiencias:', error);
+            }
         }
 
         // Función para compartir una experiencia
@@ -224,9 +229,13 @@
             const experienceText = experienceInput.value;
 
             if (experienceText) {
-                await saveExperience(experienceText);
-                displayExperience(experienceText);
-                experienceInput.value = '';
+                try {
+                    await saveExperience(experienceText);
+                    displayExperience(experienceText);
+                    experienceInput.value = '';
+                } catch (error) {
+                    console.error('Error al guardar experiencia:', error);
+                }
             } else {
                 alert('Por favor, escribe algo para compartir.');
             }
@@ -242,13 +251,18 @@
 
         // Función para guardar una experiencia en el servidor
         async function saveExperience(experience) {
-            await fetch('http://localhost:5000/experiences', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ text: experience }),
-            });
+            try {
+                const response = await fetch('http://localhost:5000/experiences', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ text: experience }),
+                });
+                if (!response.ok) throw new Error('Error al guardar la experiencia');
+            } catch (error) {
+                console.error('Error al guardar experiencia:', error);
+            }
         }
 
         // Manejo del modal de inicio de sesión
@@ -274,9 +288,9 @@
         function login() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-            // Aquí puedes agregar la lógica de autenticación
-            alert(`Iniciando sesión como ${username}`);
-            modal.style.display = "none"; // Cierra el modal después del inicio de sesión
+            alert(`Usuario: ${username}, Contraseña: ${password}`);
+            // Aquí puedes agregar lógica para autenticar al usuario
+            modal.style.display = "none";
         }
 
         // Cargar experiencias al cargar la página
@@ -284,6 +298,7 @@
     </script>
 </body>
 </html>
+
 
 
 
