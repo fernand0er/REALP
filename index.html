@@ -3,19 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REALP</title>
+    <title>Aventura y Exploración</title>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #D6CDAF;
             margin: 0;
             padding: 0;
-            color: #000000;
+            color: #3A9BD1;
         }
 
         header {
             background-color: #4B8B3B;
-            background-image: url('descarga (6).jpg');
             color: white;
             padding: 20px;
             text-align: center;
@@ -87,7 +86,7 @@
 </head>
 <body>
     <header>
-        <h1>REALP</h1>
+        <h1>Plataforma de Aventura y Exploración</h1>
         <nav>
             <ul>
                 <li><a href="#mapas">Mapas Interactivos</a></li>
@@ -139,28 +138,63 @@
     </main>
 
     <footer>
-        <p>&copy; 2024 REALP</p>
+        <p>&copy; 2024 Plataforma de Aventura y Exploración</p>
     </footer>
 
     <script>
+        // Función para unirse a un grupo
         function joinGroup(groupName) {
             alert(`Te has unido al grupo: ${groupName}`);
         }
 
+        // Función para cargar experiencias desde LocalStorage
+        function loadExperiences() {
+            const savedExperiences = localStorage.getItem('experiences');
+            if (savedExperiences) {
+                const experiences = JSON.parse(savedExperiences);
+                experiences.forEach(experience => displayExperience(experience));
+            }
+        }
+
+        // Función para compartir una experiencia
         function shareExperience() {
             const experienceInput = document.getElementById('experienceInput');
-            const experienceList = document.getElementById('experienceList');
-            
-            if (experienceInput.value) {
-                const newExperience = document.createElement('div');
-                newExperience.classList.add('experience');
-                newExperience.textContent = experienceInput.value;
-                experienceList.appendChild(newExperience);
-                experienceInput.value = ''; // Limpiar el campo de entrada
+            const experienceText = experienceInput.value;
+
+            if (experienceText) {
+                // Guardar la experiencia en LocalStorage
+                saveExperience(experienceText);
+
+                // Mostrar la experiencia en la lista
+                displayExperience(experienceText);
+
+                // Limpiar el campo de entrada
+                experienceInput.value = '';
             } else {
                 alert('Por favor, escribe algo para compartir.');
             }
         }
+
+        // Función para mostrar una experiencia en la página
+        function displayExperience(experience) {
+            const experienceList = document.getElementById('experienceList');
+            const newExperience = document.createElement('div');
+            newExperience.classList.add('experience');
+            newExperience.textContent = experience;
+            experienceList.appendChild(newExperience);
+        }
+
+        // Función para guardar una experiencia en LocalStorage
+        function saveExperience(experience) {
+            const savedExperiences = localStorage.getItem('experiences');
+            const experiences = savedExperiences ? JSON.parse(savedExperiences) : [];
+            experiences.push(experience);
+            localStorage.setItem('experiences', JSON.stringify(experiences));
+        }
+
+        // Cargar experiencias al cargar la página
+        window.onload = loadExperiences;
     </script>
 </body>
 </html>
+
