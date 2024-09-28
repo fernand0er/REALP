@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aventura y Exploración</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #D6CDAF;
+            margin: 0;
+            padding: 0;
+            color: #3A9BD1;
+        }
+
+        header {
+            background-color: #4B8B3B;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        section {
+            margin-bottom: 40px;
+        }
+
+        .group-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .group {
+            background-color: #7B5B3C;
+            color: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin-top: 10px;
+        }
+
+        button {
+            background-color: #F57C20;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #3A9BD1;
+        }
+
+        footer {
+            text-align: center;
+            background-color: #AFAFAF;
+            padding: 10px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Plataforma de Aventura y Exploración</h1>
+        <nav>
+            <ul>
+                <li><a href="#mapas">Mapas Interactivos</a></li>
+                <li><a href="#grupos">Grupos de Expedición</a></li>
+                <li><a href="#experiencias">Compartir Experiencias</a></li>
+                <li><a href="#eventos">Eventos</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="mapas">
+            <h2>Mapas Interactivos</h2>
+            <div id="map" style="height: 300px; background-color: #AFAFAF; display: flex; align-items: center; justify-content: center;">
+                Mapa Interactivo (aquí puedes integrar un mapa real)
+            </div>
+        </section>
+
+        <section id="grupos">
+            <h2>Grupos de Expedición</h2>
+            <div class="group-list">
+                <div class="group">
+                    <h3>Senderismo en los Andes</h3>
+                    <p>Únete a nuestra comunidad de senderistas en los Andes.</p>
+                    <button onclick="joinGroup('Senderismo en los Andes')">Unirse</button>
+                </div>
+                <div class="group">
+                    <h3>Ciclismo de Montaña</h3>
+                    <p>Explora rutas de ciclismo en las montañas.</p>
+                    <button onclick="joinGroup('Ciclismo de Montaña')">Unirse</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="experiencias">
+            <h2>Compartir Experiencias</h2>
+            <textarea id="experienceInput" placeholder="Comparte tu aventura..."></textarea>
+            <button onclick="shareExperience()">Compartir</button>
+            <div id="experienceList"></div>
+        </section>
+
+        <section id="eventos">
+            <h2>Eventos</h2>
+            <ul>
+                <li>Campamento de Verano - 15 de julio</li>
+                <li>Maratón de Aventura - 30 de agosto</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Plataforma de Aventura y Exploración</p>
+    </footer>
+
+    <script>
+        function joinGroup(groupName) {
+            alert(`Te has unido al grupo: ${groupName}`);
+        }
+
+        function shareExperience() {
+            const experienceInput = document.getElementById('experienceInput');
+            const experienceList = document.getElementById('experienceList');
+            
+            if (experienceInput.value) {
+                const newExperience = document.createElement('div');
+                newExperience.classList.add('experience');
+                newExperience.textContent = experienceInput.value;
+                experienceList.appendChild(newExperience);
+                experienceInput.value = ''; // Limpiar el campo de entrada
+            } else {
+                alert('Por favor, escribe algo para compartir.');
+            }
+        }
+    </script>
+</body>
+</html>
