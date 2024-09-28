@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aventura y Exploración</title>
 
+    <!-- Hoja de estilos de Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -17,11 +19,8 @@
         header {
             background-color: #4B8B3B;
             color: white;
-            padding: 5px;
+            padding: 15px;
             text-align: center;
-            display: flex;
-            justify-content: space-between; /* Para alinear el logo y los enlaces */
-            align-items: center; /* Centra verticalmente */
         }
 
         nav ul {
@@ -29,6 +28,7 @@
             padding: 0;
             margin: 0;
             display: flex;
+            justify-content: center;
         }
 
         nav ul li {
@@ -47,14 +47,9 @@
             background-color: #3A9BD1;
         }
 
-        #logo {
-            max-height: 250px; /* Ajusta la altura del logo */
-            margin-left: 20px; /* Espacio a la izquierda del logo */
-        }
-
         main {
             padding: 20px;
-            max-width: 1000px;
+            max-width: 800px;
             margin: auto;
         }
 
@@ -103,6 +98,7 @@
 </head>
 <body>
     <header>
+        <h1>Aventura y Exploración</h1>
         <nav>
             <ul>
                 <li><a href="#mapas">Mapas</a></li>
@@ -110,7 +106,6 @@
                 <li><a href="#experiencias">Experiencias</a></li>
             </ul>
         </nav>
-        <img id="logo" src="Captura_de_pantalla_2024-09-28_004651-removebg-preview.png" alt="Logo de Aventura y Exploración"> <!-- Reemplaza con la ruta de tu logo -->
     </header>
 
     <main>
@@ -145,7 +140,9 @@
         <p>&copy; 2024 Plataforma de Aventura y Exploración</p>
     </footer>
 
+    <!-- Script de Leaflet.js -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
     <script>
         // Inicializar el mapa
         const map = L.map('map').setView([0, 0], 2);
@@ -159,20 +156,22 @@
             alert(`Te has unido al grupo: ${groupName}`);
         }
 
-        // Función para cargar experiencias desde el servidor
-        async function loadExperiences() {
-            const response = await fetch('http://localhost:5000/experiences');
-            const experiences = await response.json();
-            experiences.forEach(experience => displayExperience(experience.text));
+        // Función para cargar experiencias desde LocalStorage
+        function loadExperiences() {
+            const savedExperiences = localStorage.getItem('experiences');
+            if (savedExperiences) {
+                const experiences = JSON.parse(savedExperiences);
+                experiences.forEach(experience => displayExperience(experience));
+            }
         }
 
         // Función para compartir una experiencia
-        async function shareExperience() {
+        function shareExperience() {
             const experienceInput = document.getElementById('experienceInput');
             const experienceText = experienceInput.value;
 
             if (experienceText) {
-                await saveExperience(experienceText);
+                saveExperience(experienceText);
                 displayExperience(experienceText);
                 experienceInput.value = '';
             } else {
@@ -188,15 +187,12 @@
             experienceList.appendChild(newExperience);
         }
 
-        // Función para guardar una experiencia en el servidor
-        async function saveExperience(experience) {
-            await fetch('http://localhost:5000/experiences', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ text: experience }),
-            });
+        // Función para guardar una experiencia en LocalStorage
+        function saveExperience(experience) {
+            const savedExperiences = localStorage.getItem('experiences');
+            const experiences = savedExperiences ? JSON.parse(savedExperiences) : [];
+            experiences.push(experience);
+            localStorage.setItem('experiences', JSON.stringify(experiences));
         }
 
         // Cargar experiencias al cargar la página
@@ -204,6 +200,7 @@
     </script>
 </body>
 </html>
+
 
 
 
