@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aventura y Exploración</title>
 
+    <!-- Hoja de estilos de Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -138,7 +140,9 @@
         <p>&copy; 2024 Plataforma de Aventura y Exploración</p>
     </footer>
 
+    <!-- Script de Leaflet.js -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
     <script>
         // Inicializar el mapa
         const map = L.map('map').setView([0, 0], 2);
@@ -152,20 +156,22 @@
             alert(`Te has unido al grupo: ${groupName}`);
         }
 
-        // Función para cargar experiencias desde el servidor
-        async function loadExperiences() {
-            const response = await fetch('http://localhost:5000/experiences');
-            const experiences = await response.json();
-            experiences.forEach(experience => displayExperience(experience.text));
+        // Función para cargar experiencias desde LocalStorage
+        function loadExperiences() {
+            const savedExperiences = localStorage.getItem('experiences');
+            if (savedExperiences) {
+                const experiences = JSON.parse(savedExperiences);
+                experiences.forEach(experience => displayExperience(experience));
+            }
         }
 
         // Función para compartir una experiencia
-        async function shareExperience() {
+        function shareExperience() {
             const experienceInput = document.getElementById('experienceInput');
             const experienceText = experienceInput.value;
 
             if (experienceText) {
-                await saveExperience(experienceText);
+                saveExperience(experienceText);
                 displayExperience(experienceText);
                 experienceInput.value = '';
             } else {
@@ -181,15 +187,12 @@
             experienceList.appendChild(newExperience);
         }
 
-        // Función para guardar una experiencia en el servidor
-        async function saveExperience(experience) {
-            await fetch('http://localhost:5000/experiences', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ text: experience }),
-            });
+        // Función para guardar una experiencia en LocalStorage
+        function saveExperience(experience) {
+            const savedExperiences = localStorage.getItem('experiences');
+            const experiences = savedExperiences ? JSON.parse(savedExperiences) : [];
+            experiences.push(experience);
+            localStorage.setItem('experiences', JSON.stringify(experiences));
         }
 
         // Cargar experiencias al cargar la página
@@ -197,5 +200,6 @@
     </script>
 </body>
 </html>
+
 
 
